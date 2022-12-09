@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"sample/pkg/helpers"
+	"sample/pkg/app"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 
@@ -62,7 +62,7 @@ func getEncoder() zapcore.Encoder {
 	}
 
 	// 本地环境配置
-	if helpers.IsLocal() {
+	if app.IsLocal() {
 		// 终端输出的关键词高亮
 		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		// 本地设置内置的 Console 解码器（支持 stacktrace 换行）
@@ -89,7 +89,7 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool
 	}
 
 	// 配置输出介质
-	if helpers.IsLocal() {
+	if app.IsLocal() {
 		// 本地开发终端打印和记录文件
 		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(lumberJackLogger))
 	} else {

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"reflect"
 	"time"
-
-	"sample/pkg/config"
 )
 
 func Empty(val interface{}) bool {
@@ -30,18 +28,6 @@ func Empty(val interface{}) bool {
 		return v.IsNil()
 	}
 	return reflect.DeepEqual(val, reflect.Zero(v.Type()).Interface())
-}
-
-func IsLocal() bool {
-	return config.Get("app.env") == "local"
-}
-
-func IsProduction() bool {
-	return config.Get("app.env") == "production"
-}
-
-func IsTesting() bool {
-	return config.Get("app.env") == "testing"
 }
 
 // MicrosecondsStr 将 time.Duration 类型（nano seconds 为单位）
