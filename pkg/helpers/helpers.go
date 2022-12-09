@@ -1,6 +1,10 @@
 package helpers
 
-import "reflect"
+import (
+	"reflect"
+
+	"sample/pkg/config"
+)
 
 func Empty(val interface{}) bool {
 	if val == nil {
@@ -24,4 +28,16 @@ func Empty(val interface{}) bool {
 		return v.IsNil()
 	}
 	return reflect.DeepEqual(val, reflect.Zero(v.Type()).Interface())
+}
+
+func IsLocal() bool {
+	return config.Get("app.env") == "local"
+}
+
+func IsProduction() bool {
+	return config.Get("app.env") == "production"
+}
+
+func IsTesting() bool {
+	return config.Get("app.env") == "testing"
 }
