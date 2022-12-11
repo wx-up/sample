@@ -31,6 +31,8 @@ var makeModelCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		name := args[0]
 		model := generateModel(name)
+
+		// 目录名和包名一致
 		dir := fmt.Sprintf(modelDir, model.PackageName)
 
 		// 父目录和子目录都会创建，第二个参数是目录权限，使用 0777
