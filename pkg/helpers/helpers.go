@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"fmt"
+	mathRand "math/rand"
 	"reflect"
 	"time"
 )
@@ -34,4 +35,14 @@ func Empty(val interface{}) bool {
 // 输出为小数点后 3 位的 ms （microsecond 毫秒，千分之一秒）
 func MicrosecondsStr(elapsed time.Duration) string {
 	return fmt.Sprintf("%.3fms", float64(elapsed.Nanoseconds())/1e6)
+}
+
+func RandomString(length int) string {
+	mathRand.Seed(time.Now().UnixNano())
+	letters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = letters[mathRand.Intn(len(letters))]
+	}
+	return string(b)
 }

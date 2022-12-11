@@ -20,6 +20,10 @@ import (
 	"sample/pkg/logger"
 )
 
+func init() {
+	rootCmd.AddCommand(ServerCommand)
+}
+
 // ServerCommand 运行 web 服务
 var ServerCommand = &cobra.Command{
 	Use:   "serve",
@@ -29,8 +33,8 @@ var ServerCommand = &cobra.Command{
 }
 
 func init() {
-	ServerCommand.Flags().StringP("port", "p", "", "服务启动端口，默认8080")
-	ServerCommand.Flags().StringP("shutdown_time", "s", "", "关闭服务器超时时间，单位 s，默认5s")
+	ServerCommand.Flags().StringP("port", "p", "", "服务启动端口，默认 8080")
+	ServerCommand.Flags().StringP("shutdown_time", "s", "", "关闭服务器超时时间，默认 5，单位：s")
 }
 
 func runWeb(cmd *cobra.Command, args []string) {
@@ -95,4 +99,5 @@ func runWeb(cmd *cobra.Command, args []string) {
 		logger.ErrorString("CMD", "stop serve", err.Error())
 		console.Exit("关闭服务器失败，错误：" + err.Error())
 	}
+	console.Warning("服务退出成功")
 }
