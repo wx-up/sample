@@ -7,10 +7,10 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(KeyCommand)
+	Register(keyCommand)
 }
 
-var KeyCommand = &cobra.Command{
+var keyCommand = &cobra.Command{
 	Use:   "key",
 	Short: "创建 App Key",
 	Run: func(cmd *cobra.Command, args []string) {

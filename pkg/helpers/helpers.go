@@ -3,6 +3,7 @@ package helpers
 import (
 	"fmt"
 	mathRand "math/rand"
+	"os"
 	"reflect"
 	"time"
 )
@@ -45,4 +46,21 @@ func RandomString(length int) string {
 		b[i] = letters[mathRand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+// PutFile 将数据存入文件
+func PutFile(data []byte, to string) error {
+	err := os.WriteFile(to, data, 0o644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// FileExists 判断文件是否存在
+func FileExists(name string) bool {
+	if _, err := os.Stat(name); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }

@@ -21,11 +21,11 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(ServerCommand)
+	Register(serverCommand)
 }
 
 // ServerCommand 运行 web 服务
-var ServerCommand = &cobra.Command{
+var serverCommand = &cobra.Command{
 	Use:   "serve",
 	Short: "启动web服务",
 	Run:   runWeb,
@@ -33,8 +33,8 @@ var ServerCommand = &cobra.Command{
 }
 
 func init() {
-	ServerCommand.Flags().StringP("port", "p", "", "服务启动端口，默认 8080")
-	ServerCommand.Flags().StringP("shutdown_time", "s", "", "关闭服务器超时时间，默认 5，单位：s")
+	serverCommand.Flags().StringP("port", "p", "", "服务启动端口，默认 8080")
+	serverCommand.Flags().StringP("shutdown_time", "s", "", "关闭服务器超时时间，默认 5，单位：s")
 }
 
 func runWeb(cmd *cobra.Command, args []string) {

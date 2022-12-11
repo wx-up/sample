@@ -39,3 +39,7 @@ var rootCmd = &cobra.Command{
 func Execute() error {
 	return rootCmd.Execute()
 }
+
+func Register(cmd *cobra.Command) {
+	rootCmd.AddCommand(cmd)
+}
