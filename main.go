@@ -1,39 +1,50 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 
+	"github.com/spf13/cobra"
+	"sample/app/cmd"
 	"sample/bootstrap"
-	"sample/pkg/config"
-
-	btsConfig "sample/config"
-
-	"github.com/gin-gonic/gin"
+	"sample/config"
+	configPkg "sample/pkg/config"
+	"sample/pkg/console"
 )
 
 func init() {
-	// 加载 config 目录下的配置信息
-	btsConfig.Initialize()
+	config.Initialize()
 }
 
 func main() {
-	// 配置初始化，依赖命令行 --env 参数
-	var env string
-	flag.StringVar(&env, "env", "", "加载 .env 文件，如 --env=testing 加载的是 .env.testing 文件")
-	flag.Parse()
-	config.InitConfig(env)
+	rootCmd := &cobra.Command{
+		Use:   "sample",
+		Short: "通用web框架",
+		CompletionOptions: cobra.CompletionOptions{
+			HiddenDefaultCmd: true,
+		},
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			// 配置初始化，依赖命令行 --env 参数
+			env, _ := cmd.Flags().GetString("env")
+			configPkg.InitConfig(env)
 
-	// new 一个 Gin Engine 实例
-	router := gin.New()
+			// 初始化 Logger
+			bootstrap.SetupLogger()
 
-	// 初始化路由绑定
-	bootstrap.SetupRoute(router)
+			// 初始化数据库
+			// bootstrap.SetupDB()
 
-	// 运行服务
-	err := router.Run(":" + config.Get("app.port"))
-	if err != nil {
-		// 错误处理，端口被占用了或者其他错误
-		fmt.Println(err.Error())
+			// 初始化 Redis
+			// bootstrap.SetupRedis()
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			_ = cmd.Help()
+			return nil
+		},
+	}
+	rootCmd.AddCommand(cmd.ServerCommand)
+	rootCmd.PersistentFlags().StringP("env", "e", "", "当前环境")
+
+	if err := rootCmd.Execute(); err != nil {
+		console.Exit(fmt.Sprintf("启动失败：%s", err.Error()))
 	}
 }
