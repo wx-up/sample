@@ -4,36 +4,37 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"sample/app/http/requests"
-	"sample/app/models/user"
+	"sample/app/models/{{.PackageName}}"
 	"sample/app/policies"
 	"sample/pkg/response"
 )
 
-type UsersController struct {
+type {{.StructNamePlural}}Controller struct {
 	BaseController
 }
 
 // Index 列表
-func (c *UsersController) Index(ctx *gin.Context) {
-	objs := user.All()
+func (c *{{.StructNamePlural}}Controller) Index(ctx *gin.Context) {
+	objs := {{.PackageName}}.All()
 	response.JSON(ctx, objs)
 }
 
 // Show 详情
-func (c *UsersController) Show(ctx *gin.Context) {
-	obj := user.Get(cast.ToInt64(ctx.Param("id")))
+func (c *{{.StructNamePlural}}Controller) Show(ctx *gin.Context) {
+	obj := {{.PackageName}}.Get(cast.ToInt64(ctx.Param("id")))
 	response.JSON(ctx, obj)
 }
 
 // Store 创建
-func (c *UsersController) Store(ctx *gin.Context) {
-	var in requests.UserRequest
+func (c *{{.StructNamePlural}}Controller) Store(ctx *gin.Context) {
+	var in requests.{{.StructName}}Request
 	requests.Validate(ctx, &in)
 
-	obj := user.User{
-		Password: "",
-		Username: "",
-	}
+    obj := &{{.PackageName}}.{{.StructName}}{}
+	if err := in.Copy(&obj); err != nil {
+    	response.BadRequest(ctx)
+    	return
+    }
 
 	obj.Create()
 
@@ -45,19 +46,19 @@ func (c *UsersController) Store(ctx *gin.Context) {
 }
 
 // Update 更新
-func (c *UsersController) Update(ctx *gin.Context) {
-	obj := user.Get(cast.ToInt64(ctx.Param("id")))
+func (c *{{.StructNamePlural}}Controller) Update(ctx *gin.Context) {
+	obj := {{.PackageName}}.Get(cast.ToInt64(ctx.Param("id")))
 	if obj.ID <= 0 {
 		response.Abort404(ctx)
 		return
 	}
 
-	if policies.CanModifyUser(ctx, obj) {
+	if policies.CanModify{{.StructName}}(ctx, obj) {
 		response.Abort403(ctx)
 		return
 	}
 
-	var in requests.UserRequest
+	var in requests.{{.StructName}}Request
 	requests.Validate(ctx, &in)
 
 	if err := in.Copy(&obj); err != nil {
@@ -73,14 +74,14 @@ func (c *UsersController) Update(ctx *gin.Context) {
 	response.JSON(ctx, obj)
 }
 
-func (c *UsersController) Delete(ctx *gin.Context) {
-	obj := user.Get(cast.ToInt64(ctx.Param("id")))
+func (c *{{.StructNamePlural}}Controller) Delete(ctx *gin.Context) {
+	obj := {{.PackageName}}.Get(cast.ToInt64(ctx.Param("id")))
 	if obj.ID <= 0 {
 		response.Abort404(ctx)
 		return
 	}
 
-	if policies.CanModifyUser(ctx, obj) {
+	if policies.CanModify{{.StructName}}(ctx, obj) {
 		response.Abort403(ctx)
 		return
 	}

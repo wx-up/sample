@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"os"
 	"os/signal"
@@ -64,14 +65,14 @@ func runWeb(cmd *cobra.Command, args []string) {
 		dt = 5
 	}
 
-	serve := http.Server{
+	server := http.Server{
 		Addr:    port,
 		Handler: engine,
 	}
 
 	go func() {
-		err := serve.ListenAndServe()
-		if err != nil {
+		err := server.ListenAndServe()
+		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			logger.ErrorString("CMD", "start serve", err.Error())
 			console.Exit("启动服务求失败，错误:" + err.Error())
 		}
@@ -94,7 +95,7 @@ func runWeb(cmd *cobra.Command, args []string) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(dt))
 	defer cancel()
-	err := serve.Shutdown(ctx)
+	err := server.Shutdown(ctx)
 	if err != nil {
 		logger.ErrorString("CMD", "stop serve", err.Error())
 		console.Exit("关闭服务器失败，错误：" + err.Error())

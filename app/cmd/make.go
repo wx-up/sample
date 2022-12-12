@@ -34,7 +34,7 @@ var makeCommand = &cobra.Command{
 
 func makeFile(path string, tplPath string, dataFunc func() map[string]string) {
 	if helpers.FileExists(path) {
-		console.Exit(path + "已经存在")
+		console.Exit(path + " 已经存在")
 		return
 	}
 
