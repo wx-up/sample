@@ -1,9 +1,11 @@
 package cmd
 
 import (
-	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
+
+	"sample/pkg/console"
 )
 
 func init() {
@@ -11,8 +13,8 @@ func init() {
 }
 
 const (
-	requestFilePath = "app/http/requests/%s_request.go"
-	requestTplPath  = "template/request.tpl"
+	requestFileDir = "app/http/requests"
+	requestTplPath = "template/request.tpl"
 )
 
 var requestCommand = &cobra.Command{
@@ -20,9 +22,14 @@ var requestCommand = &cobra.Command{
 	Short: "自动创建请求参数文件",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		if err := os.MkdirAll(requestFileDir, os.ModePerm); err != nil {
+			console.Exit("创建目录失败：" + err.Error())
+			return
+		}
+
 		name := args[0]
 		model := generateModel(name)
-		filePath := fmt.Sprintf(requestFilePath, model.PackageName)
+		filePath := requestFileDir + "/" + model.PackageName + "_request.go"
 		makeFile(filePath, requestTplPath, func() map[string]string {
 			return model.ToMap()
 		})

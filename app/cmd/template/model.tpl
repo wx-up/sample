@@ -12,7 +12,7 @@ type {{.StructName}} struct {
     models.BaseModel
 
     // Put fields in here
-    TODO()
+    // TODO()
 
     models.CommonTimestampsField
 }

@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"embed"
-	"html/template"
 	"os"
+	"text/template"
 
 	"sample/pkg/console"
 
