@@ -25,3 +25,8 @@ func ({{.VariableName}} *{{.StructName}}) Save() (rowsAffected int64) {
     result := database.DB.Save({{.VariableName}})
     return result.RowsAffected
 }
+
+func ({{.VariableName}} *{{.StructName}}) Delete() (rowsAffected int64) {
+    result := database.DB.Delete({{.VariableName}})
+    return result.RowsAffected
+}

@@ -23,3 +23,8 @@ func (user *User) Save() (rowsAffected int64) {
 	result := database.DB.Save(user)
 	return result.RowsAffected
 }
+
+func (user *User) Delete() (rowsAffected int64) {
+	result := database.DB.Delete(user)
+	return result.RowsAffected
+}

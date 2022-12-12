@@ -4,11 +4,11 @@ import (
 	"github.com/thedevsaddam/govalidator"
 )
 
-type {{.StructName}}Request struct {
+type UserRequest struct {
 	// Phone string `json:"phone,omitempty" valid:"phone"`
 }
 
-func (r *{{.StructName}}Request) Validate() map[string][]string {
+func (r *UserRequest) Validate() map[string][]string {
 	// 自定义验证规则
 	rules := govalidator.MapData{
 		//"phone": []string{"required", "digits:11"},
@@ -30,7 +30,6 @@ func (r *{{.StructName}}Request) Validate() map[string][]string {
 	return validateStruct(opts)
 }
 
-
-func (r *{{.StructName}}Request) Copy(dst any) error {
+func (r *UserRequest) Copy(dst any) error {
 	return Copy(r, dst)
 }
