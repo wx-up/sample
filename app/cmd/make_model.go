@@ -42,21 +42,11 @@ var makeModelCommand = &cobra.Command{
 		}
 
 		dataFunc := func() map[string]string {
-			var res map[string]string
-			bs, _ := json.Marshal(model)
-			_ = json.Unmarshal(bs, &res)
-			return res
+			return model.ToMap()
 		}
-		// 创建文件
-		modelPath := dir + "/" + model.PackageName + ".go"
-		makeFile(modelPath, modelTplPath, dataFunc)
-		console.Success("创建文件：" + modelPath + " 成功")
-		modelUtilPath := dir + "/" + model.PackageName + "_util.go"
-		makeFile(modelUtilPath, modelUtilTplPath, dataFunc)
-		console.Success("创建文件：" + modelUtilPath + " 成功")
-		modelHookPath := dir + "/" + model.PackageName + "_hook.go"
-		makeFile(modelHookPath, modelHookTplPath, dataFunc)
-		console.Success("创建文件：" + modelHookPath + " 成功")
+		makeFile(dir+"/"+model.PackageName+".go", modelTplPath, dataFunc)
+		makeFile(dir+"/"+model.PackageName+"_util.go", modelUtilTplPath, dataFunc)
+		makeFile(dir+"/"+model.PackageName+"_hook.go", modelHookTplPath, dataFunc)
 	},
 }
 
@@ -100,4 +90,11 @@ func generateModel(in string) Model {
 	model.TableName = str.Snake(model.StructNamePlural)
 	model.PackageName = str.Snake(model.StructName)
 	return model
+}
+
+func (m Model) ToMap() map[string]string {
+	var res map[string]string
+	bs, _ := json.Marshal(m)
+	_ = json.Unmarshal(bs, &res)
+	return res
 }

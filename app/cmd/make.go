@@ -23,6 +23,10 @@ var makeCommand = &cobra.Command{
 	Use:   "make",
 	Short: "自动创建一些文件和代码，比如模型、控制器等等",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) <= 0 {
+			_ = cmd.Help()
+			return nil
+		}
 		return nil
 	},
 	Args: cobra.NoArgs,
@@ -49,5 +53,6 @@ func makeFile(path string, tplPath string, dataFunc func() map[string]string) {
 		console.Exit("写入模板错误：" + err.Error())
 		return
 	}
+	console.Success("创建文件：" + path + " 成功")
 	return
 }
