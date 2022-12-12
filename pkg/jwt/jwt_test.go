@@ -9,7 +9,7 @@ import (
 
 func Test_jwt(t *testing.T) {
 	type args struct {
-		uid        string
+		uid        int64
 		username   string
 		expireTime int64
 		sleep      int64
@@ -23,11 +23,11 @@ func Test_jwt(t *testing.T) {
 		{
 			name: "generate token",
 			args: args{
-				uid:      "1",
+				uid:      1,
 				username: "wx",
 			},
 			want: &Claims{
-				Uid:      "1",
+				Uid:      1,
 				UserName: "wx",
 			},
 			wantErr: nil,
@@ -35,13 +35,13 @@ func Test_jwt(t *testing.T) {
 		{
 			name: "token parse fail expire",
 			args: args{
-				uid:        "1",
+				uid:        1,
 				username:   "wx",
 				expireTime: time.Now().Add(time.Second * 2).Unix(),
 				sleep:      3,
 			},
 			want: &Claims{
-				Uid:      "1",
+				Uid:      1,
 				UserName: "wx",
 			},
 			wantErr: ErrTokenExpired,

@@ -7,7 +7,7 @@ import (
 
 // BaseModel 模型基类
 type BaseModel struct {
-	ID uint64 `gorm:"column:id;primaryKey;autoIncrement;" json:"id,omitempty"`
+	ID int64 `gorm:"column:id;primaryKey;autoIncrement;" json:"id,omitempty"`
 }
 
 // CommonTimestampsField 时间戳

@@ -31,7 +31,7 @@ type jwt struct {
 }
 
 type Claims struct {
-	Uid      string `json:"uid"`
+	Uid      int64  `json:"uid"`
 	UserName string `json:"user_name"`
 	jwtPkg.StandardClaims
 }
@@ -150,7 +150,7 @@ func (j *jwt) getTokenFromHeader(ctx *gin.Context) (string, error) {
 }
 
 // GenerateToken 创建 token
-func (j *jwt) GenerateToken(uid string, userName string) string {
+func (j *jwt) GenerateToken(uid int64, userName string) string {
 	expireTime := j.getExpireTime()
 	timeNow := app.TimeNowInTimezone().Unix()
 	claims := &Claims{

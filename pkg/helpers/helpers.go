@@ -87,3 +87,14 @@ func BcryptIsHashed(str string) bool {
 	// bcrypt 加密后的长度等于 60
 	return len(str) == 60
 }
+
+func ParseRequestErrs(errs map[string][]string) string {
+	msg := ""
+	for _, err := range errs {
+		if len(err) > 0 {
+			msg = err[0]
+			break
+		}
+	}
+	return msg
+}
