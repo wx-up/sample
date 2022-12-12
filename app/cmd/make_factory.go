@@ -19,7 +19,7 @@ const (
 
 var makeFactoryCommand = &cobra.Command{
 	Use:   "factory",
-	Short: "创建数据工程",
+	Short: "创建 数据工厂 模板",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := os.MkdirAll(factoryDir, os.ModePerm); err != nil {
