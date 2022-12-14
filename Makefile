@@ -3,9 +3,16 @@
 
 .DEFAULT_GOAL := help
 
+cmd := $(MAKECMDGOALS)
+
+
 .PHONY: controller
 controller:
-	@go run main.go make $(MAKECMDGOALS)
+ifeq ($(cmd),controller)
+	@go run main.go make $(cmd) -h
+else
+	@go run main.go make $(cmd)
+endif
 
 .PHONY: help
 help:
@@ -14,23 +21,44 @@ help:
 
 .PHONY: model
 model:
-	@go run main.go make $(MAKECMDGOALS)
+ifeq ($(cmd),model)
+	@go run main.go make $(cmd) -h
+else
+	@go run main.go make $(cmd)
+endif
 
 .PHONY: policy
 policy:
-	@go run main.go make $(MAKECMDGOALS)
+ifeq ($(cmd),policy)
+	@go run main.go make $(cmd) -h
+else
+	@go run main.go make $(cmd)
+endif
+
 
 
 .PHONY: request
 request:
-	@go run main.go make $(MAKECMDGOALS)
+ifeq ($(cmd),request)
+	@go run main.go make $(cmd) -h
+else
+	@go run main.go make $(cmd)
+endif
 
 
 .PHONY: seed
 seed:
-	@go run main.go make $(MAKECMDGOALS)
+ifeq ($(cmd),seed)
+	@go run main.go make $(cmd) -h
+else
+	@go run main.go make $(cmd)
+endif
 
 
 .PHONY: factory
 factory:
-	@go run main.go make $(MAKECMDGOALS)
+ifeq ($(cmd),factory)
+	@go run main.go make $(cmd) -h
+else
+	@go run main.go make $(cmd)
+endif
